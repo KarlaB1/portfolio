@@ -1,0 +1,7 @@
+---
+import { categoryLabels, type Category } from '../data/taxonomy';
+interface Props { category: Category }
+const { category } = Astro.props;
+---
+
+<span class={`tag tag--${category}`}>{categoryLabels[category]}</span>

@@ -1,0 +1,86 @@
+---
+title: Búsqueda avanzada de clientes para un portal de logística
+summary: Antes, buscar o agregar un cliente obligaba a salir al menú lateral. Diseñé en Figma y programé en Angular una búsqueda de clientes integrada en la orden y en la barra superior de un portal de logística en EUA, para celular y para web.
+category: professional
+year: 2026
+role: Diseño UX/UI y desarrollo frontend
+team: Única diseñadora del proyecto
+duration: 2023 – 2026
+tools: [Figma, Angular, Angular Material, TypeScript]
+cover: ../../assets/work/portal/w-find-customer.png
+coverAlt: Diseño web de la pantalla Find Customer, con campos para buscar por nombre de empresa, dirección de facturación, dirección de envío, código postal y email, y un panel de información del cliente a la derecha.
+note: Los diseños usan datos de ejemplo; no se muestra información de la empresa. Los datos de un cliente que podrían ser reales están difuminados.
+featured: true
+order: 2
+draft: false
+---
+
+import ScreenGrid from '../../components/ScreenGrid.astro';
+import mNewOrder from '../../assets/work/portal/m-new-order.png';
+import mDeliveryDate from '../../assets/work/portal/m-delivery-date.png';
+import mCustomerSelected from '../../assets/work/portal/m-customer-selected.png';
+import mOrderFilled from '../../assets/work/portal/m-order-filled.png';
+import wHeader1 from '../../assets/work/portal/w-header-1.png';
+import wHeader2 from '../../assets/work/portal/w-header-2.png';
+import wHeader3 from '../../assets/work/portal/w-header-3.png';
+import wNewOrder from '../../assets/work/portal/w-new-order.png';
+import wFindCustomer from '../../assets/work/portal/w-find-customer.png';
+import wCustomerFound from '../../assets/work/portal/w-customer-found.png';
+
+## Contexto
+
+Trabajé de 2023 a 2026 en un portal interno para una empresa de logística en Estados Unidos. Lo usa el personal de almacén para gestionar órdenes y clientes.
+
+Era la única diseñadora del proyecto. Los requisitos venían directamente del CEO de la empresa cliente. Diseñaba las pantallas en Figma y después las programaba yo misma en Angular: las primeras a mano y las más recientes con apoyo de IA.
+
+## El problema
+
+En el portal anterior, para buscar un cliente o dar de alta uno nuevo, el usuario tenía que salir de lo que estaba haciendo y entrar al menú lateral. Eso convertía algo sencillo en un flujo largo.
+
+Mi propuesta fue llevar la búsqueda y el alta de clientes **al lugar donde se necesitan**: dentro de la orden nueva y en la barra superior. Así el usuario busca o agrega un cliente sin salir de la pantalla en la que está trabajando.
+
+## Cómo trabajábamos
+
+Le mandaba los diseños al CEO, pero casi nunca estaba disponible para revisarlos. Para no frenar el proyecto, pasaba el diseño a código, y él lo revisaba ya funcionando: si le gustaba se quedaba así, y si pedía cambios los hacíamos.
+
+## En el celular: elegir al cliente de una orden nueva
+
+Diseñé la versión responsiva del formulario de **orden nueva**, donde se elige al cliente. Desde ahí se puede buscar un cliente, darlo de alta o abrir la búsqueda avanzada. Al elegirlo, se llenan su contacto, sus direcciones y su forma de pago.
+
+<ScreenGrid
+  cols={4}
+  items={[
+    { src: mNewOrder, alt: 'Formulario New Order en celular: datos del evento y fecha de la orden, campo Search customer, botones Add New Customer y Advance Search Customer, y campos de contacto, direcciones, forma de pago y notas. Abajo, botones Print Order y Send To Print Order.', caption: 'Orden nueva, sin cliente' },
+    { src: mDeliveryDate, alt: 'El mismo formulario con un calendario desplegado para elegir la fecha de entrega.', caption: 'Elegir fecha de entrega' },
+    { src: mCustomerSelected, alt: 'Formulario con un cliente de ejemplo elegido; aparecen los botones Contacts y Change Customer y se ocultan Search y Add New Customer.', caption: 'Cliente elegido' },
+    { src: mOrderFilled, alt: 'Formulario con los datos del cliente de ejemplo llenos: teléfonos, email, direcciones de facturación y envío, forma de pago y una nota.', caption: 'Datos del cliente cargados' },
+  ]}
+/>
+
+## En web: búsqueda rápida y búsqueda avanzada
+
+Para la versión web hice un prototipo con dos formas de encontrar a un cliente. La **búsqueda rápida** vive en la barra superior: al abrirla y escribir, muestra coincidencias con la información con la que coincide cada una (teléfono, empresa o dirección).
+
+<ScreenGrid
+  cols={1}
+  wide
+  items={[
+    { src: wHeader1, alt: 'Barra superior del portal con menú, ícono de búsqueda, ubicación y saludo al usuario.', caption: 'Barra superior' },
+    { src: wHeader2, alt: 'La barra superior con el campo Search Customer abierto.', caption: 'Búsqueda abierta' },
+    { src: wHeader3, alt: 'Debajo del campo de búsqueda aparecen cuatro clientes de ejemplo; cada uno muestra iniciales, nombre y el dato con el que coincide: teléfono, empresa, dirección de envío o de facturación.', caption: 'Resultados con el dato que coincide' },
+  ]}
+/>
+
+La **búsqueda avanzada** se abre desde la orden nueva y permite buscar por nombre de empresa, dirección de facturación, dirección de envío, código postal o email, con la información del cliente a un lado.
+
+<ScreenGrid
+  cols={1}
+  wide
+  items={[
+    { src: wNewOrder, alt: 'Formulario New Order en web, a dos columnas: cliente con botón Advance Search Customer, teléfono, email, direcciones, forma de pago y notas.', caption: 'Orden nueva en web' },
+    { src: wFindCustomer, alt: 'Pantalla Find Customer: a la izquierda, campos By Company Name, By Billing Street Address, By Shipping Street Address, By Shipping Zip Code y Email; a la derecha, un panel Customer info vacío.', caption: 'Búsqueda avanzada' },
+    { src: wCustomerFound, alt: 'La misma pantalla con un cliente encontrado: el panel muestra nombre, dirección de facturación y dirección de envío, difuminados.', caption: 'Cliente encontrado' },
+  ]}
+/>
+
+{/* Karla diseñó más pantallas del portal, pero ya no tiene acceso a ellas; solo se muestra lo que conserva. */}

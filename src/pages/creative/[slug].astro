@@ -1,0 +1,163 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MetaList from '../../components/MetaList.astro';
+import Tag from '../../components/Tag.astro';
+import VideoEmbed from '../../components/VideoEmbed.astro';
+import { getCreative, pad } from '../../lib/content';
+import { mediumLabels } from '../../data/taxonomy';
+
+export async function getStaticPaths() {
+  const items = await getCreative();
+  return items.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: { entry, next: items.length > 1 ? items[(i + 1) % items.length] : undefined },
+  }));
+}
+
+const { entry, next } = Astro.props;
+const { title, summary, medium, category, year, role, tools, location, camera, cover, coverAlt, images, subseries, video } =
+  entry.data;
+const { Content } = await render(entry);
+const isComic = medium === 'comic';
+---
+
+<BaseLayout title={title} description={summary} image={cover.src} type="article">
+  <article>
+    <header class="wrap cr-header">
+      <p class="mono"><a href="/creative/" class="back">← Creativo</a></p>
+      <div class="cr-tags">
+        <span class="mono">{mediumLabels[medium]}</span>
+        <Tag category={category} />
+        <span class="mono muted">{year}</span>
+      </div>
+      <h1 class="display">{title}</h1>
+      <p class="lead">{summary}</p>
+      <MetaList
+        items={[
+          { label: 'Rol', value: role },
+          { label: 'Lugar', value: location },
+          { label: 'Cámara', value: camera },
+          { label: 'Herramientas', value: tools.join(', ') },
+          { label: 'Duración', value: video?.duration },
+        ]}
+      />
+    </header>
+
+    {
+      video ? (
+        <div class="wrap cr-media">
+          <VideoEmbed title={title} poster={cover} {...video} />
+        </div>
+      ) : images.length === 0 ? (
+        <figure class="wrap cr-media">
+          <div class="panel"><Image src={cover} alt={coverAlt} widths={[800, 1400, 2000]} sizes="100vw" loading="eager" /></div>
+        </figure>
+      ) : null
+    }
+
+    <div class="wrap cr-text"><div class="prose"><Content /></div></div>
+
+    {
+      images.length > 0 && (
+        <div class:list={['wrap', isComic ? 'pages' : 'gallery']}>
+          {images.map((img, i) => {
+            const landscape = img.src.width > img.src.height;
+            return (
+              <figure class:list={['shot', { 'shot--wide': !isComic && landscape }]} data-reveal>
+                <div class="shot__img">
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    widths={[600, 1000, 1600, 2200]}
+                    sizes={isComic || landscape ? '(min-width: 64rem) 70vw, 100vw' : '(min-width: 48rem) 50vw, 100vw'}
+                  />
+                </div>
+                <figcaption class="mono">
+                  <span class="frame-label__n">{isComic ? `pág. ${pad(i + 1)}` : pad(i + 1)}</span>
+                  {img.caption && <span>{img.caption}</span>}
+                </figcaption>
+              </figure>
+            );
+          })}
+        </div>
+      )
+    }
+
+    {
+      subseries.map((sub) => (
+        <section class="subseries">
+          <header class="wrap subseries__head">
+            <h2 class="h1">{sub.title}</h2>
+            {sub.intro && <p class="lead">{sub.intro}</p>}
+          </header>
+          <div class="wrap gallery">
+            {sub.images.map((img, i) => {
+              const landscape = img.src.width > img.src.height;
+              return (
+                <figure class:list={['shot', { 'shot--wide': landscape }]} data-reveal>
+                  <div class="shot__img">
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      widths={[600, 1000, 1600, 2200]}
+                      sizes={landscape ? '(min-width: 64rem) 70vw, 100vw' : '(min-width: 48rem) 50vw, 100vw'}
+                    />
+                  </div>
+                  <figcaption class="mono">
+                    <span class="frame-label__n">{pad(i + 1)}</span>
+                    {img.caption && <span>{img.caption}</span>}
+                  </figcaption>
+                </figure>
+              );
+            })}
+          </div>
+        </section>
+      ))
+    }
+  </article>
+
+  {
+    next && (
+      <nav class="wrap cr-next" aria-label="Siguiente proyecto creativo">
+        <a href={`/creative/${next.id}/`}>
+          <span class="mono muted">Siguiente · {mediumLabels[next.data.medium]}</span>
+          <span class="h1">{next.data.title} <span class="arrow" aria-hidden="true">→</span></span>
+        </a>
+      </nav>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .cr-header { padding-top: clamp(2rem, 5vw, 4rem); display: grid; gap: 1.5rem; }
+  .back { text-decoration: none; }
+  .cr-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
+  .cr-media { margin-top: clamp(2.5rem, 5vw, 4rem); }
+  .cr-media .panel { aspect-ratio: 16 / 9; }
+  .cr-text { margin-block: clamp(2.5rem, 5vw, 4rem); }
+  .cr-text .prose:empty { display: none; }
+
+  .shot__img { border-radius: var(--radius); background: var(--paper-2); }
+  .shot__img :global(img) { width: 100%; }
+  .shot figcaption { display: flex; gap: 1rem; margin-top: 0.6rem; text-transform: none; }
+
+  /* Photography: landscape images span the row, portraits pair up. */
+  .gallery { display: grid; gap: clamp(1.5rem, 3vw, 2.5rem) var(--gutter); }
+  @media (min-width: 48rem) {
+    .gallery { grid-template-columns: 1fr 1fr; align-items: start; }
+    .shot--wide { grid-column: 1 / -1; }
+  }
+
+  /* Comics: pages read one after another, centred, like a reader. */
+  .pages { display: grid; gap: clamp(2rem, 5vw, 4rem); justify-items: center; }
+  .pages .shot { width: 100%; max-width: 52rem; }
+
+  .subseries { margin-top: var(--space); }
+  .subseries__head { display: grid; gap: 1rem; padding-top: 1rem; border-top: 1px solid var(--line); margin-bottom: clamp(2rem, 4vw, 3rem); }
+
+  .cr-next { margin-top: var(--space); }
+  .cr-next a { display: grid; gap: 0.75rem; padding-top: 1rem; border-top: 1px solid var(--line); text-decoration: none; }
+  .cr-next a:hover .h1 { color: var(--accent); }
+</style>

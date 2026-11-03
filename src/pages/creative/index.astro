@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FrameLabel from '../../components/FrameLabel.astro';
+import CreativeCard from '../../components/CreativeCard.astro';
+import { getCreative, pad } from '../../lib/content';
+import { media, mediumLabels } from '../../data/taxonomy';
+
+const creative = await getCreative();
+// One section per medium, in taxonomy order; empty media are hidden.
+const groups = media
+  .map((m) => ({ medium: m, items: creative.filter((c) => c.data.medium === m) }))
+  .filter((g) => g.items.length > 0);
+---
+
+<BaseLayout
+  title="Trabajo creativo"
+  description="Fotografía, video, cómic y proyectos multimedia: narrativa visual fuera de la interfaz."
+>
+  <section class="wrap section">
+    <FrameLabel n="02" label="Creativo" as="p" />
+    <h1 class="display">Imagen, secuencia <em>e historia.</em></h1>
+    <p class="lead muted intro">
+      Fotografía, video y cómic que he hecho, algunos académicos y otros personales. Aquí practico composición,
+      ritmo y narrativa visual.
+    </p>
+
+    {
+      groups.length > 1 && (
+        <nav class="media-nav mono" aria-label="Trabajo creativo por medio">
+          <ul role="list">
+            {groups.map((g) => (
+              <li><a href={`#${g.medium}`}>{mediumLabels[g.medium]} <span class="muted">({g.items.length})</span></a></li>
+            ))}
+          </ul>
+        </nav>
+      )
+    }
+
+    {
+      groups.map((g, i) => (
+        <section class="group" aria-labelledby={g.medium}>
+          <FrameLabel n={pad(i + 1)} label={mediumLabels[g.medium]} id={g.medium} aside={`${g.items.length}`} />
+          <div class="grid">
+            {g.items.map((entry) => <CreativeCard entry={entry} />)}
+          </div>
+        </section>
+      ))
+    }
+  </section>
+</BaseLayout>
+
+<style>
+  .intro { margin-top: 1.5rem; }
+  .media-nav {
+    position: sticky; top: 4rem; z-index: 10; background: var(--paper);
+    margin-top: 3rem; padding-block: 0.75rem; border-block: 1px solid var(--line);
+  }
+  .media-nav ul { display: flex; gap: 1.5rem; overflow-x: auto; }
+  .media-nav a { text-decoration: none; white-space: nowrap; }
+  .media-nav a:hover { color: var(--accent); }
+  @media (max-width: 40rem) { .media-nav { top: 0; } }
+
+  .group { margin-top: clamp(4rem, 8vw, 6rem); scroll-margin-top: 8rem; }
+  .group :global(.frame-label) { scroll-margin-top: 8rem; }
+  .grid { display: grid; gap: 3rem var(--gutter); }
+  @media (min-width: 40rem) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 64rem) { .grid { grid-template-columns: repeat(3, 1fr); } }
+</style>

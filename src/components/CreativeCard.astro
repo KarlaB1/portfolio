@@ -1,0 +1,39 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Tag from './Tag.astro';
+import { mediumLabels } from '../data/taxonomy';
+
+interface Props {
+  entry: CollectionEntry<'creative'>;
+  sizes?: string;
+}
+const { entry, sizes = '(min-width: 64rem) 33vw, (min-width: 40rem) 50vw, 100vw' } = Astro.props;
+const { title, medium, category, year, cover, coverAlt } = entry.data;
+---
+
+<article class="creative-card" data-reveal>
+  <a href={`/creative/${entry.id}/`}>
+    <div class="panel creative-card__media">
+      <Image src={cover} alt={coverAlt} widths={[400, 700, 1000]} sizes={sizes} />
+      {medium === 'video' && <span class="creative-card__play mono" aria-hidden="true">▶ Ver</span>}
+    </div>
+    <p class="creative-card__meta mono">
+      <span>{mediumLabels[medium]}</span><span class="muted">{year}</span>
+    </p>
+    <h3 class="creative-card__title">{title}</h3>
+    <Tag category={category} />
+  </a>
+</article>
+
+<style>
+  .creative-card a { display: block; text-decoration: none; }
+  .creative-card__media { aspect-ratio: 4 / 5; }
+  .creative-card__play {
+    position: absolute; left: 0.75rem; bottom: 0.75rem;
+    background: var(--paper); color: var(--ink); padding: 0.4rem 0.6rem;
+  }
+  .creative-card__meta { display: flex; justify-content: space-between; margin-top: 0.9rem; }
+  .creative-card__title { font-family: var(--font-display); font-size: var(--step-1); margin-block: 0.35rem 0.75rem; transition: color 0.3s var(--ease); }
+  .creative-card a:hover .creative-card__title { color: var(--accent); font-style: italic; }
+</style>

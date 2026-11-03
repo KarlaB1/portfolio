@@ -1,0 +1,78 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MetaList from '../../components/MetaList.astro';
+import Tag from '../../components/Tag.astro';
+import { getWork } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const work = await getWork();
+  return work.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: { entry, next: work.length > 1 ? work[(i + 1) % work.length] : undefined },
+  }));
+}
+
+const { entry, next } = Astro.props;
+const { title, summary, category, year, role, team, duration, tools, cover, coverAlt, note } = entry.data;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={title} description={summary} image={cover.src} type="article">
+  <article>
+    <header class="wrap cs-header">
+      <p class="cs-back mono"><a href="/work/">← Proyectos</a></p>
+      <div class="cs-tags"><Tag category={category} /><span class="mono muted">{year}</span></div>
+      <h1 class="display cs-title">{title}</h1>
+      <p class="lead">{summary}</p>
+      <MetaList
+        items={[
+          { label: 'Rol', value: role },
+          { label: 'Equipo', value: team },
+          { label: 'Duración', value: duration },
+          { label: 'Herramientas', value: tools.join(', ') },
+        ]}
+      />
+      {note && <p class="cs-note mono">{note}</p>}
+    </header>
+
+    <figure class="wrap cs-cover">
+      <div class="panel">
+        <Image src={cover} alt={coverAlt} widths={[800, 1200, 1800, 2400]} sizes="100vw" loading="eager" />
+      </div>
+    </figure>
+
+    <div class="wrap cs-body">
+      <div class="prose"><Content /></div>
+    </div>
+  </article>
+
+  {
+    next && (
+      <nav class="wrap cs-next" aria-label="Siguiente caso de estudio">
+        <a href={`/work/${next.id}/`}>
+          <span class="mono muted">Siguiente caso de estudio</span>
+          <span class="h1">{next.data.title} <span class="arrow" aria-hidden="true">→</span></span>
+        </a>
+      </nav>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .cs-header { padding-top: clamp(2rem, 5vw, 4rem); display: grid; gap: 1.5rem; }
+  .cs-back a { text-decoration: none; }
+  .cs-tags { display: flex; align-items: center; gap: 1rem; }
+  .cs-title { max-width: 16ch; }
+  .cs-note { border-left: 2px solid var(--accent); padding-left: 1rem; text-transform: none; max-width: var(--measure); }
+  .cs-cover { margin-block: clamp(2.5rem, 5vw, 4rem); }
+  .cs-cover .panel { aspect-ratio: 16 / 9; }
+  @media (min-width: 64rem) {
+    .cs-body { display: grid; grid-template-columns: 1fr 2fr; container-type: inline-size; }
+    .cs-body .prose { grid-column: 2; }
+  }
+  .cs-next { margin-top: var(--space); }
+  .cs-next a { display: grid; gap: 0.75rem; padding-top: 1rem; border-top: 1px solid var(--line); text-decoration: none; }
+  .cs-next a:hover .h1 { color: var(--accent); }
+</style>

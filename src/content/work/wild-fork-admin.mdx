@@ -1,0 +1,102 @@
+---
+title: Sistema interno de administración para Wild Fork
+summary: Sistema web para que empleados de Wild Fork consulten y creen órdenes y administren clientes y productos. Hice todo el frontend durante mis prácticas de la ingeniería.
+category: professional
+year: 2024
+role: Diseño de interfaz y desarrollo frontend
+team: "El frontend lo hice yo sola; el backend, otra persona"
+duration: Enero – abril 2024
+tools: [Angular, Angular Material, Bootstrap, TypeScript]
+cover: ../../assets/work/internships/cover.jpg
+coverAlt: Pantalla de órdenes del sistema interno de Wild Fork — una cuadrícula de tarjetas con número de orden, fecha y total, debajo de una barra de búsqueda con botones de acción. Los nombres de clientes están difuminados.
+note: Los datos de clientes están difuminados en todas las capturas.
+featured: true
+order: 3
+draft: true # pendiente: capturas de las pantallas que falten + revisar "Lo que cambiaría hoy"
+---
+
+import { Image } from 'astro:assets';
+import ScreenGrid from '../../components/ScreenGrid.astro';
+import login from '../../assets/work/internships/wf-login.png';
+import menu from '../../assets/work/internships/wf-menu.png';
+import mobile from '../../assets/work/internships/wf-mobile.png';
+import home from '../../assets/work/internships/wf-home.png';
+import orders from '../../assets/work/internships/wf-orders.png';
+import newOrderCustomer from '../../assets/work/internships/wf-new-order-customer.png';
+import newOrderProducts from '../../assets/work/internships/wf-new-order-products.png';
+import newOrderModal from '../../assets/work/internships/wf-new-order-modal.png';
+import products from '../../assets/work/internships/wf-products.png';
+import customers from '../../assets/work/internships/wf-customers.png';
+import code from '../../assets/work/internships/wf-code-buttons.png';
+
+## Contexto
+
+En mis prácticas de la ingeniería trabajé en un sistema web interno para empleados de **Wild Fork**. Me encargué de todo el frontend, es decir, cómo se veía y el código detrás, mientras otra persona hizo el backend. Los requisitos me los daba el gerente, que me decía lo que necesitaba el equipo. El sistema lo usaron empleados de Wild Fork.
+
+No hubo un proceso formal de UX: no hubo investigación con usuarios, wireframes ni pruebas. Diseñé directamente en código.
+
+## Entrar y moverse
+
+El sistema cubre lo esencial del trabajo de los empleados: iniciar sesión, revisar órdenes, crear órdenes nuevas y consultar clientes y productos.
+
+<ScreenGrid
+  cols={2}
+  items={[
+    { src: login, alt: 'Pantalla de inicio de sesión con el logo de Wild Fork, campos de email y contraseña, botón para ingresar y opción de continuar con cuenta de Microsoft.', caption: 'Inicio de sesión — email o cuenta de Microsoft' },
+    { src: home, alt: 'Pantalla de inicio titulada Wild Fork Administración, con pestañas de Inicio y Acerca de nosotros y un carrusel con la foto de una tienda Wild Fork.', caption: 'Inicio' },
+    { src: menu, alt: 'Menú lateral desplegado sobre la página, con Inicio, Órdenes, Nueva orden, Clientes y Productos, cada uno con su ícono.', caption: 'Menú lateral desplegado' },
+    { src: orders, alt: 'Pantalla de órdenes: barra de búsqueda con botones de buscar, actualizar, filtrar y documentos, sobre una cuadrícula de tarjetas con número, fecha y total. Los nombres de clientes están difuminados.', caption: 'Órdenes — buscar y consultar' },
+  ]}
+/>
+
+## Crear una orden
+
+Crear una orden está dividido en dos pestañas: primero el cliente y después la lista de productos. Cada producto abre una ventana para indicar la cantidad y agregar notas.
+
+<ScreenGrid
+  cols={3}
+  items={[
+    { src: newOrderCustomer, alt: 'Nueva orden, pestaña Cliente: nombre del cliente, teléfono y email, botones Cambiar cliente y Mostrar dirección, y un panel de dirección. Los datos están difuminados.', caption: 'Nueva orden — cliente' },
+    { src: newOrderProducts, alt: 'Nueva orden, pestaña Lista de productos: campo de búsqueda y botón Agregar, y debajo un producto agregado con código, nombre, cantidad y total.', caption: 'Nueva orden — productos' },
+    { src: newOrderModal, alt: 'Ventana Item Info sobre la nueva orden, con código, nombre, disponibilidad, campo de cantidad, notas y acciones de actualizar, eliminar y agregar.', caption: 'Ventana de producto' },
+  ]}
+/>
+
+## Clientes y productos
+
+<ScreenGrid
+  cols={2}
+  items={[
+    { src: customers, alt: 'Pantalla de clientes: botones Añadir nuevo cliente y Acomodar A-Z sobre una cuadrícula de tarjetas con inicial y código de cliente. Nombres y teléfonos difuminados.', caption: 'Clientes' },
+    { src: products, alt: 'Pantalla de productos: botón Agregar nuevo producto y barra de búsqueda sobre una cuadrícula de tarjetas con nombre, código y código de barras.', caption: 'Productos' },
+  ]}
+/>
+
+## En el celular
+
+La interfaz es **responsive**: en el celular, el menú lateral se convierte en una barra superior.
+
+<ScreenGrid
+  cols={4}
+  items={[
+    { src: mobile, alt: 'Vista en celular de la pantalla de inicio: barra superior con botón de menú y logo de Wild Fork, pestañas de Inicio y Acerca de nosotros, y la foto de la tienda.', caption: 'Vista en celular' },
+  ]}
+/>
+
+## La capa visual en código
+
+La capa visual la construí yo sobre Angular Material y Bootstrap; por ejemplo, los botones con degradado y sus estados al pasar el cursor y deshabilitado:
+
+<Image src={code} alt="Editor de código con orders.component.css: estilos de botones con degradado de rojo a durazno, esquinas redondeadas y estados hover y disabled." widths={[800, 1300]} sizes="(min-width: 64rem) 50rem, 100vw" />
+
+{/* BORRADOR — pendiente de que Karla lo revise antes de publicar. */}
+
+## Lo que cambiaría hoy
+
+Viendo este trabajo con lo que he aprendido de UX desde entonces:
+
+- **Un solo sistema de botones.** Hay tres estilos (azul plano, píldora con degradado y solo texto). Definiría uno primario y uno secundario y los usaría en todas partes.
+- **Jerarquía de color más clara.** Naranja, verde azulado, rojo y rosa compiten por la atención. Usaría un color principal para las acciones.
+- **Un solo idioma.** "Nueva Orden" aparece junto a "Item Info" y "Quantity".
+- **Lectura más fácil.** El texto de las tarjetas está alineado a la derecha; alineado a la izquierda se lee más rápido.
+- **Etiquetas en los botones de íconos.** La búsqueda de órdenes tiene cinco botones solo con ícono, y no es obvio qué hace cada uno.

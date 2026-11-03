@@ -1,0 +1,21 @@
+---
+import { site } from '../data/site';
+const socials = site.social.filter((s) => s.href);
+---
+
+<footer class="site-footer">
+  <div class="wrap site-footer__inner">
+    <p class="mono">© {new Date().getFullYear()} {site.name}{site.location && <span class="muted"> · {site.location}</span>}</p>
+    <ul role="list" class="site-footer__links mono">
+      {site.email && <li><a href={`mailto:${site.email}`}>{site.email}</a></li>}
+      {socials.map((s) => <li><a href={s.href} rel="me noopener">{s.label}</a></li>)}
+      {site.cvUrl && <li><a href={site.cvUrl}>CV (PDF)</a></li>}
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .site-footer { border-top: 1px solid var(--line); padding-block: 1.5rem; margin-top: var(--space); }
+  .site-footer__inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+  .site-footer__links { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+</style>

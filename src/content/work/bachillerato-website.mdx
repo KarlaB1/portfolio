@@ -1,0 +1,61 @@
+---
+title: Sitio web del Bachillerato Sara María Basave de Toxqui
+summary: Sitio informativo para un bachillerato público de Puebla, hecho en equipo durante mis prácticas del TSU. Mi parte fue todo el diseño visual, en CSS y Bootstrap.
+category: professional
+year: 2022
+role: Diseño visual y maquetación (CSS + Bootstrap)
+team: En equipo
+duration: Mayo – agosto 2022
+tools: [HTML, CSS, Bootstrap]
+cover: ../../assets/work/internships/school-enrollment-hero.jpg
+coverAlt: Encabezado de la sección de inscripciones del sitio del Bachillerato, con el escudo de la escuela en el menú y una foto de la fachada con el texto Inscripción ciclo escolar 2021-2022.
+note: Los datos personales de docentes y estudiantes y los datos bancarios están difuminados en todas las capturas.
+featured: true
+order: 4
+draft: true # pendiente: capturas completas de cada sección + revisar "Lo que cambiaría hoy"
+---
+
+import ScreenGrid from '../../components/ScreenGrid.astro';
+import schoolHero from '../../assets/work/internships/school-enrollment-hero.jpg';
+import schoolWelcome from '../../assets/work/internships/school-welcome.jpg';
+import schoolTrainings from '../../assets/work/internships/school-trainings.jpg';
+import schoolContact from '../../assets/work/internships/school-contact.jpg';
+import schoolEnrollInfo from '../../assets/work/internships/school-enrollment-info.jpg';
+import schoolTeachers from '../../assets/work/internships/school-teachers.jpg';
+
+## Contexto
+
+En mis prácticas del TSU hicimos en equipo un sitio web informativo para el Bachillerato General Oficial "Sara María Basave de Toxqui". Mi parte fue el diseño: todo el código visual, con CSS y Bootstrap. La escuela nos dio la información y las fotos.
+
+No hubo un proceso formal de UX: no hubo investigación con usuarios, wireframes ni pruebas. Diseñé directamente en código a partir de lo que la escuela necesitaba publicar.
+
+## El sitio
+
+El sitio tenía cinco secciones: **Inicio** (bienvenida, misión, visión, valores, historia, ubicación y un formulario de contacto), **Inscripciones** (cuotas y formatos para descargar), **Capacitaciones**, **Logros** y **Docentes**.
+
+{/* TODO: reemplazar por capturas completas de cada sección (Inicio, Inscripciones, Capacitaciones, Logros, Docentes) cuando Karla las envíe. */}
+
+<ScreenGrid
+  cols={2}
+  items={[
+    { src: schoolHero, alt: 'Encabezado de la sección de inscripciones: menú con el escudo de la escuela y una foto de la fachada con el texto Inscripción ciclo escolar 2021-2022.', caption: 'Inscripciones — encabezado' },
+    { src: schoolWelcome, alt: 'Sección de bienvenida con los textos de misión, visión y valores de la escuela.', caption: 'Inicio — bienvenida' },
+    { src: schoolTrainings, alt: 'Sección de capacitaciones con cuatro tarjetas con foto: mecánica dental, contabilidad y administración, higiene y salud comunitaria, y agropecuaria de traspatio.', caption: 'Capacitaciones' },
+    { src: schoolContact, alt: 'Formulario de contacto titulado ¿Necesitas ayuda?, con campos de nombre, email y comentario, y un botón rojo de enviar.', caption: 'Inicio — contacto' },
+    { src: schoolEnrollInfo, alt: 'Información de inscripción: cuotas acordadas por la sociedad de padres de familia, formatos para descargar y tablas de aportaciones. El número de cuenta y el enlace están difuminados.', caption: 'Inscripciones — cuotas y formatos' },
+    { src: schoolTeachers, alt: 'Sección de docentes organizada por primer, segundo y tercer año, con fotos y nombres pixelados.', caption: 'Docentes' },
+  ]}
+/>
+
+## Resultado
+
+La escuela usó el sitio durante un tiempo. Después lo dio de baja porque había que seguir pagando el servidor y decidió no hacer ese gasto.
+
+{/* BORRADOR — pendiente de que Karla lo revise antes de publicar. */}
+
+## Lo que cambiaría hoy
+
+Viendo este trabajo con lo que he aprendido de UX desde entonces:
+
+- **Contraste.** Algunos títulos en rojo sobre fondo gris casi no se leen.
+- **Información en texto, no en imágenes.** Las tablas de cuotas eran imágenes; como texto se leen mejor en el celular y son accesibles para lectores de pantalla.

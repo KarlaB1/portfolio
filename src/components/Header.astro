@@ -1,0 +1,70 @@
+---
+import { site } from '../data/site';
+
+const links = [
+  { href: '/work/', label: 'Proyectos' },
+  { href: '/creative/', label: 'Creativo' },
+  { href: '/about/', label: 'Sobre mí' },
+];
+const path = Astro.url.pathname;
+const contactHref = site.email ? `mailto:${site.email}` : '/#contact';
+---
+
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="brand" href="/" aria-current={path === '/' ? 'page' : undefined}>
+      <span class="brand__name">{site.name}</span>
+      <span class="brand__role mono">{site.role}</span>
+    </a>
+    <nav aria-label="Principal">
+      <ul role="list" class="nav">
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href} aria-current={path.startsWith(l.href) ? 'page' : undefined}>
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+        <li><a class="nav__contact" href={contactHref}>Contacto</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-header__inner {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    min-height: 4rem;
+  }
+  .brand { display: flex; align-items: baseline; gap: 0.75rem; text-decoration: none; }
+  .brand__name { font-family: var(--font-display); font-size: 1.25rem; letter-spacing: -0.01em; }
+  .brand__role { color: var(--ink-2); font-size: 0.6875rem; }
+
+  .nav { display: flex; gap: clamp(1rem, 2.5vw, 2rem); font-size: 0.9375rem; }
+  .nav a { text-decoration: none; position: relative; padding-block: 0.5rem; }
+  .nav a::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0.2rem; height: 1px;
+    background: currentColor; transform: scaleX(0); transform-origin: left;
+    transition: transform 0.35s var(--ease);
+  }
+  .nav a:hover::after, .nav a[aria-current='page']::after { transform: scaleX(1); }
+  .nav a[aria-current='page'] { color: var(--accent); }
+  .nav__contact { color: var(--accent); }
+
+  /* Mobile: two rows instead of a hamburger — all sections stay one tap away. */
+  @media (max-width: 40rem) {
+    .site-header { position: relative; }
+    .site-header__inner { flex-direction: column; align-items: stretch; gap: 0; padding-block: 0.6rem 0.2rem; }
+    .brand__role { display: none; }
+    .nav { justify-content: space-between; }
+    .nav a { display: block; padding-block: 0.6rem; }
+  }
+</style>

@@ -1,0 +1,56 @@
+---
+// Row of phone screens / sketches with numbered captions, for case studies (MDX).
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  items: { src: ImageMetadata; alt: string; caption?: string }[];
+  /** Max columns on wide screens. */
+  cols?: number;
+  /** Wide screens (desktop UI): larger image sizes. */
+  wide?: boolean;
+}
+const { items, cols = 4, wide = false } = Astro.props;
+const widths = wide ? [480, 800, 1200, 1600] : [320, 480, 720];
+const sizes = wide ? `(min-width: 64rem) calc(60rem / ${cols}), 100vw` : '(min-width: 64rem) 20rem, 45vw';
+---
+
+<div class:list={['screens', { wide }]} style={`--cols: ${cols}`}>
+  {
+    items.map((item, i) => (
+      <figure>
+        <Image src={item.src} alt={item.alt} widths={widths} sizes={sizes} />
+        {item.caption && (
+          <figcaption>
+            <span class="n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span> {item.caption}
+          </figcaption>
+        )}
+      </figure>
+    ))
+  }
+</div>
+
+<style>
+  .screens {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+    align-items: start;
+    margin-block: 2rem;
+  }
+  @media (min-width: 48rem) {
+    .screens { grid-template-columns: repeat(min(var(--cols), 3), minmax(0, 1fr)); }
+  }
+  @media (min-width: 64rem) {
+    .screens {
+      grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+      margin-inline: 0 var(--breakout, 0px);
+    }
+  }
+  /* Desktop screens are too wide to share a row on phones. */
+  @media (max-width: 47.99rem) { .wide { grid-template-columns: 1fr; } }
+  figure { margin: 0; display: grid; gap: 0.6rem; }
+  img { width: 100%; height: auto; border-radius: var(--radius); margin: 0; }
+  figcaption { font-family: var(--font-mono); font-size: var(--step--1); color: var(--ink-2); line-height: 1.4; }
+  .n { color: var(--accent); }
+</style>

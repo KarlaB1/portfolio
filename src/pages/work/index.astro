@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FrameLabel from '../../components/FrameLabel.astro';
+import WorkCard from '../../components/WorkCard.astro';
+import { getWork, pad } from '../../lib/content';
+
+const work = await getWork();
+---
+
+<BaseLayout title="Proyectos UX/UI" description="Casos de estudio UX/UI: contexto, proceso, decisiones y aprendizajes.">
+  <section class="section wrap">
+    <FrameLabel n="01" label="Proyectos" as="p" aside={`${work.length} ${work.length === 1 ? 'caso de estudio' : 'casos de estudio'}`} />
+    <h1 class="display intro">Casos de estudio <em>UX/UI</em></h1>
+    <p class="lead muted">
+      Cada proyecto está etiquetado como profesional, académico, personal o experimental, y cuenta solo lo que realmente hice.
+    </p>
+    <div class="grid">
+      {work.map((entry, i) => <WorkCard entry={entry} n={pad(i + 1)} />)}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .intro { margin-bottom: 1.5rem; }
+  .grid { display: grid; gap: clamp(3rem, 6vw, 5rem) var(--gutter); margin-top: clamp(3rem, 6vw, 5rem); }
+  @media (min-width: 48rem) { .grid { grid-template-columns: repeat(2, 1fr); } }
+</style>

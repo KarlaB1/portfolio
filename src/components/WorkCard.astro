@@ -1,0 +1,52 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Tag from './Tag.astro';
+
+interface Props {
+  entry: CollectionEntry<'work'>;
+  n: string;
+  size?: 'large' | 'default';
+}
+const { entry, n, size = 'default' } = Astro.props;
+const { title, summary, category, year, role, cover, coverAlt } = entry.data;
+---
+
+<article class:list={['work-card', `work-card--${size}`]} data-reveal>
+  <a href={`/work/${entry.id}/`} class="work-card__link">
+    <div class="panel work-card__media">
+      <Image
+        src={cover}
+        alt={coverAlt}
+        widths={[480, 800, 1200, 1600]}
+        sizes={size === 'large' ? '(min-width: 64rem) 60vw, 100vw' : '(min-width: 48rem) 50vw, 100vw'}
+      />
+    </div>
+    <div class="work-card__body">
+      <p class="work-card__meta mono">
+        <span class="work-card__n" aria-hidden="true">{n}</span>
+        <span>{year}</span>
+        <Tag category={category} />
+      </p>
+      <h3 class="h2 work-card__title">{title} <span class="arrow" aria-hidden="true">→</span></h3>
+      <p class="work-card__summary muted">{summary}</p>
+      <p class="mono work-card__role"><span class="visually-hidden">Rol: </span>{role}</p>
+    </div>
+  </a>
+</article>
+
+<style>
+  .work-card__link { display: grid; gap: 1.25rem; text-decoration: none; }
+  .work-card__media { aspect-ratio: 16 / 10; }
+  .work-card__meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.9rem; }
+  .work-card__n { color: var(--accent); }
+  .work-card__title { transition: color 0.3s var(--ease); }
+  .work-card__link:hover .work-card__title { color: var(--accent); }
+  .work-card__summary { margin-top: 0.75rem; max-width: 34rem; }
+  .work-card__role { margin-top: 1rem; }
+
+  @media (min-width: 64rem) {
+    .work-card--large .work-card__link { grid-template-columns: 7fr 5fr; gap: var(--gutter); align-items: end; }
+    .work-card--large .work-card__body { padding-bottom: 0.5rem; }
+  }
+</style>

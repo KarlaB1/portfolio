@@ -1,0 +1,16 @@
+---
+interface Props {
+  n: string;
+  label: string;
+  aside?: string;
+  as?: 'h2' | 'p';
+  id?: string;
+}
+const { n, label, aside, as: Tag = 'h2', id } = Astro.props;
+---
+
+<Tag class="frame-label" id={id}>
+  <span class="frame-label__n" aria-hidden="true">{n}</span>
+  <span>{label}</span>
+  {aside && <span class="frame-label__aside">{aside}</span>}
+</Tag>

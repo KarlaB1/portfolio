@@ -1,0 +1,113 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FrameLabel from '../components/FrameLabel.astro';
+import { site, education, certifications, tools } from '../data/site';
+
+const certs = certifications.filter((c) => !import.meta.env.PROD || !c.pending);
+const toolGroups = tools.filter((g) => g.items.length > 0);
+---
+
+<BaseLayout title="Sobre mí" description={`Sobre ${site.name}: ${site.role} con formación en ingeniería de software y en narrativas multimedia.`}>
+  <section class="wrap section">
+    <FrameLabel n="03" label="Sobre mí" as="p" />
+    <h1 class="display about-title">De cómo funcionan las cosas a <em>cómo se viven.</em></h1>
+
+    <!-- DRAFT: to be reviewed and rewritten with you in the content stage. -->
+    <div class="about-story">
+      <div class="prose">
+        <p>
+          Estudié Ingeniería en Gestión y Desarrollo de Software y trabajé en productos web junto a equipos técnicos.
+          Eso me dio una comprensión práctica de cómo se construyen los productos digitales y de las conversaciones
+          entre diseño y código.
+        </p>
+        <p>
+          Con el tiempo, lo que más me importaba pasó de cómo funcionan las cosas a cómo se viven: qué entiende
+          alguien en una pantalla, dónde duda, qué debería venir después. Ahí es donde me enfoco ahora, como
+          diseñadora UX/UI.
+        </p>
+        <p>
+          Al mismo tiempo, estudio Humanidades y Narrativas Multimedia, y hago cosas más allá de la pantalla:
+          fotografía, video, cómic y contenido. Ahí practico la composición, el ritmo y contar una historia en
+          secuencia, habilidades de las que también depende una buena interfaz.
+        </p>
+        <p>
+          Edito video desde 2014, cuando empecé con unos videos de mi hermana. En la prepa, en 2019, dos amigos y yo teníamos una página de humor en Facebook: yo proponía
+          ideas, editaba los videos en KineMaster y a veces también las imágenes que usábamos en ellos.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section facts" aria-label="Trayectoria">
+    <div>
+      <FrameLabel n="A" label="Formación" />
+      <ul role="list" class="list">
+        {
+          education.map((e) => (
+            <li>
+              <p class="list__title">{e.title}</p>
+              <p class="mono muted">
+                {[e.institution, e.years, e.status === 'en curso' ? 'En curso' : ''].filter(Boolean).join(' · ')}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    {
+      certs.length > 0 && (
+        <div>
+          <FrameLabel n="B" label="Certificaciones" />
+          <ul role="list" class="list">
+            {certs.map((c) => (
+              <li>
+                <p class="list__title">{c.url ? <a href={c.url}>{c.name}</a> : c.name}</p>
+                <p class="mono muted">{[c.issuer, c.year].filter(Boolean).join(' · ')}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+
+    <div>
+      <FrameLabel n="C" label="Herramientas" />
+      <dl class="tools">
+        {
+          toolGroups.map((g) => (
+            <div>
+              <dt class="mono muted">{g.group}</dt>
+              <dd>{g.items.join(', ')}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    <div>
+      <FrameLabel n="D" label="Contacto" aside={site.location} />
+      <p class="contact">
+        {site.email && <a class="btn btn--solid" href={`mailto:${site.email}`}>{site.email}</a>}
+        {site.cvUrl && <a class="btn" href={site.cvUrl}>CV (PDF)</a>}
+        {site.social.filter((s) => s.href).map((s) => <a class="btn" href={s.href} rel="me noopener">{s.label}</a>)}
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-title { max-width: 18ch; }
+  .about-story { margin-top: clamp(2.5rem, 5vw, 4rem); }
+  @media (min-width: 64rem) {
+    .about-story { display: grid; grid-template-columns: 1fr 2fr; }
+    .about-story .prose { grid-column: 2; font-size: var(--step-1); line-height: 1.5; }
+  }
+  .facts { display: grid; gap: 3.5rem var(--gutter); }
+  @media (min-width: 48rem) { .facts { grid-template-columns: 1fr 1fr; } }
+  .list { display: grid; gap: 1.25rem; }
+  .list__title { font-family: var(--font-display); font-size: var(--step-1); }
+  .tools { display: grid; gap: 1rem; }
+  .tools dt { margin-bottom: 0.2rem; }
+  .contact { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+</style>
