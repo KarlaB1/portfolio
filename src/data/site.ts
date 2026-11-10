@@ -13,7 +13,7 @@ export const site = {
   email: 'merarikarla2018@gmail.com',
   location: 'Puebla, México',
   lang: 'es',
-  url: 'https://example.com', // TODO: final domain (needed for SEO + sitemap)
+  url: 'https://portfoliokrlb.netlify.app',
   cvUrl: '/Karla_Bibiano_CV.pdf',
   ogImage: '', // TODO: e.g. '/og.jpg' (1200×630) in /public
   social: [
