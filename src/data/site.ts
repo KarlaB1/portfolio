@@ -18,7 +18,7 @@ export const site = {
   ogImage: '', // TODO: e.g. '/og.jpg' (1200×630) in /public
   social: [
     { label: 'WhatsApp', href: 'https://wa.me/522222083967' },
-    { label: 'LinkedIn', href: '' }, // TODO: Karla sends it later
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/karla-bibiano-ba72962b8' },
   ],
 };
 
@@ -39,7 +39,14 @@ export const education = [
 
 // Names as they appear in Karla's CV. Entries with `pending: true` only show in local dev.
 export const certifications = [
-  { name: 'Certificación Google UX Design (Coursera) — en curso', issuer: 'Google', year: '', url: '', pending: false },
+  // 5 of 7 course certificates earned (2026-11); verifiable on her LinkedIn.
+  {
+    name: 'Certificación Google UX Design (Coursera) — en curso, 5 de 7 cursos completados',
+    issuer: 'Google',
+    year: '',
+    url: 'https://www.linkedin.com/in/karla-bibiano-ba72962b8/details/certifications/',
+    pending: false,
+  },
   { name: 'Claude 101', issuer: 'Anthropic', year: '', url: '', pending: false },
 ];
 
